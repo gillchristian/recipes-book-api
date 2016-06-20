@@ -4,13 +4,18 @@
     .module('recipesBookApp')
     .controller('RecipesController', RecipesController);
 
-  RecipesController.$inject = ['RecipesService', 'ngNotify'];
-
   function RecipesController(RecipesService, ngNotify) {
+    // --- view-model ---
     var vm = this;
+    // --- exposed methods ---
+    vm.submit = submit;
+    
+    // --- variables initialization ---
     vm.title = 'Recipes';
-    vm.previewTitle = 'Preview Recipes';
+    vm.previewTitle = 'Preview Recipe';
     vm.model = {};
+
+    // --- angular-formly fields ---
     vm.fields = [
       {
         key: 'name',
@@ -49,18 +54,21 @@
         }
       },
     ];
+    
+    ///////////////////////////
 
-    vm.originalFields = angular.copy(vm.fields);
-
-    vm.submit = function(model) {
-      RecipesService.create(model)
-      .then(function(data) {
-        ngNotify.set('Your Player was successfully saved!', 'success');
-        vm.options.resetModel();
-      })
-      .catch(function(error) {
-        ngNotify.set('There was a problem saving your Player... ', 'error');
-      });
+    /**
+     * Submit the form
+     */
+    function submit() {
+      RecipesService.create(vm.model)
+        .then(function(data) {
+          ngNotify.set('Your Recipe was successfully saved!', 'success');
+          vm.options.resetModel();
+        })
+        .catch(function(error) {
+          ngNotify.set('There was a problem saving your Recipe... Please try again', 'error');
+        });
     }
   }
 
