@@ -1,4 +1,5 @@
-require('dotenv').load();
+// const dotEnv = require('dotenv');
+// dotEnv.load();
 
 const config = {
   PORT: process.env.PORT || 8080,
