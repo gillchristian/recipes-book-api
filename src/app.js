@@ -10,7 +10,7 @@ const app = express();
 function server(mongoose) {
   require('./libraries/promisify-all')(['mongoose']); // eslint-disable-line global-require
 
-  mongoose.connect(config.MONGODB_URL);
+  mongoose.connect(config.MONGODB_URI);
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
   app.use(morgan('tiny'));
