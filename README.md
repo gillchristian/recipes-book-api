@@ -1,5 +1,7 @@
 # Recipes API & CMS
 
+[ ![Codeship Status for gillchristian/recipes-book](https://codeship.com/projects/6024a390-193d-0134-67dc-5a26eed482e4/status?branch=master)](https://codeship.com/projects/158879)
+
 A CMS to keep track of cooking recipies.
 
 ## Prerequisites
