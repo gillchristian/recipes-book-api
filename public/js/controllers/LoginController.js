@@ -34,7 +34,7 @@
       LoginService.auth(model)
       .then(function(token) {
         localStorage.token = token.data;
-        $state.go('cards');
+        $state.go('recipes');
       });
     }
   }

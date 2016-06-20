@@ -44,7 +44,7 @@
         type: 'input',
         templateOptions: {
           label: 'Recipe image url',
-          required: true,
+          required: false,
           placeholder: 'http://some-site-url/appel-pie.png'
         }
       },
