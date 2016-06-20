@@ -4,12 +4,12 @@ const request = require('supertest');
 const app = require('./helpers/mock.app');
 const config = require('../src/config/config');
 var token = '';
-var aCard = require('./helpers/newRecipe');
-var newRecipe = JSON.parse(JSON.stringify(aCard));
-var updatedCard = JSON.parse(JSON.stringify(newRecipe));
-updatedCard.idName = (JSON.parse(JSON.stringify(updatedCard.name.toLowerCase()))).replace(/ /g, '-').replace(/\./g, '');
+var aRecipe = require('./helpers/newRecipe')();
+var newRecipe = aRecipe;
+var updatedRecipe = Object.assign({}, aRecipe);
+updatedRecipe.idName = updatedRecipe.name.toLowerCase().replace(/ /g, '-').replace(/\./g, '');
 
-describe('Cards.', function () {
+describe('Recipes.', function () {
   this.timeout(5000);
 
   describe('/api/recipes', () => {
@@ -38,7 +38,7 @@ describe('Cards.', function () {
           });
       });
 
-      it('should try to create a duplicated card', done => {
+      it('should try to create a duplicated Recipe', done => {
         request(app)
           .post('/api/recipes')
           .set('Accept', 'application/json')
@@ -66,7 +66,7 @@ describe('Cards.', function () {
         request(app)
           .post('/api/recipes')
           .set('Accept', 'application/json')
-          .set('Authorization', '111111111111111111111111111111111111.111111111111111111111111111111111111111111111111111111111111111111111111.1111111111111111111111111111111111111111111')
+          .set('Authorization', '111111111111111.11111111111111111.1111111111')
           .send(newRecipe)
           .expect('Content-Type', /json/)
           .end((err, res) => {
@@ -85,16 +85,15 @@ describe('Cards.', function () {
           .end((err, res) => {
             newRecipe._id = res.body[0]._id;
             res.body[0].name.should.eql(newRecipe.name);
-            res.body[0].rarity.should.eql(newRecipe.rarity);
-            res.body[0].type.should.eql(newRecipe.type);
-            res.body[0].description.should.eql(newRecipe.description);
-            res.body[0].arena.should.eql(newRecipe.arena);
-            res.body[0].elixirCost.should.eql(newRecipe.elixirCost);
+            res.body[0].ingredients.should.eql(newRecipe.ingredients);
+            res.body[0].instructions.should.eql(newRecipe.instructions);
             res.status.should.eql(200);
             done();
           });
       });
+    });
 
+    describe('GET /:id', () => {
       it('should find one recipe by id', done => {
         request(app)
           .get('/api/recipes/' + newRecipe._id)
@@ -102,34 +101,14 @@ describe('Cards.', function () {
           .expect('Content-Type', /json/)
           .end((err, res) => {
             res.body.name.should.eql(newRecipe.name);
-            res.body.rarity.should.eql(newRecipe.rarity);
-            res.body.type.should.eql(newRecipe.type);
-            res.body.description.should.eql(newRecipe.description);
-            res.body.arena.should.eql(newRecipe.arena);
-            res.body.elixirCost.should.eql(newRecipe.elixirCost);
+            res.body.ingredients.should.eql(newRecipe.ingredients);
+            res.body.instructions.should.eql(newRecipe.instructions);
             res.status.should.eql(200);
             done();
           });
       });
 
-      it('should find one recipe by idName', done => {
-        request(app)
-          .get('/api/recipes/' + newRecipe.idName)
-          .set('Authorization', token)
-          .expect('Content-Type', /json/)
-          .end((err, res) => {
-            res.body.name.should.eql(newRecipe.name);
-            res.body.rarity.should.eql(newRecipe.rarity);
-            res.body.type.should.eql(newRecipe.type);
-            res.body.description.should.eql(newRecipe.description);
-            res.body.arena.should.eql(newRecipe.arena);
-            res.body.elixirCost.should.eql(newRecipe.elixirCost);
-            res.status.should.eql(200);
-            done();
-          });
-      });
-
-      it('should not find one recipe by id', done => {
+      it('should not find one recipe by wrong id', done => {
         request(app)
           .get('/api/recipes/111111111111111111111111')
           .set('Authorization', token)
@@ -139,8 +118,24 @@ describe('Cards.', function () {
             done();
           });
       });
+    });
 
-      it('should not find one recipe by idName', done => {
+    describe('GET /:idName', () => {
+      it('should find one recipe by idName', done => {
+        request(app)
+          .get('/api/recipes/' + newRecipe.idName)
+          .set('Authorization', token)
+          .expect('Content-Type', /json/)
+          .end((err, res) => {
+            res.body.name.should.eql(newRecipe.name);
+            res.body.ingredients.should.eql(newRecipe.ingredients);
+            res.body.instructions.should.eql(newRecipe.instructions);
+            res.status.should.eql(200);
+            done();
+          });
+      });
+
+      it('should not find one recipe by wrong idName', done => {
         request(app)
           .get('/api/recipes/some-name-here')
           .set('Authorization', token)
@@ -150,26 +145,9 @@ describe('Cards.', function () {
             done();
           });
       });
-
-      it('should find recipe by type', done => {
-        request(app)
-          .get('/api/recipes?rarity='  + newRecipe.rarity)
-          .set('Authorization', token)
-          .expect('Content-Type', /json/)
-          .end((err, res) => {
-            res.body[0].name.should.eql(newRecipe.name);
-            res.body[0].rarity.should.eql(newRecipe.rarity);
-            res.body[0].type.should.eql(newRecipe.type);
-            res.body[0].description.should.eql(newRecipe.description);
-            res.body[0].arena.should.eql(newRecipe.arena);
-            res.body[0].elixirCost.should.eql(newRecipe.elixirCost);
-            res.status.should.eql(200);
-            done();
-          });
-      });
     });
 
-    describe('PUT /', () => {
+    describe('PUT /:id', () => {
       it('should update a recipe', done => {
         updatedRecipe.name = 'New Name';
         request(app)
@@ -181,11 +159,8 @@ describe('Cards.', function () {
           .end((err, res) => {
             newRecipe._id = res.body._id;
             res.body.name.should.eql(updatedRecipe.name);
-            res.body.rarity.should.eql(newRecipe.rarity);
-            res.body.type.should.eql(newRecipe.type);
-            res.body.description.should.eql(newRecipe.description);
-            res.body.arena.should.eql(newRecipe.arena);
-            res.body.elixirCost.should.eql(newRecipe.elixirCost);
+            res.body.ingredients.should.eql(newRecipe.ingredients);
+            res.body.instructions.should.eql(newRecipe.instructions);
             res.status.should.eql(200);
             done();
           });
@@ -206,10 +181,10 @@ describe('Cards.', function () {
       });
     });
 
-    describe('DELETE /', () => {
+    describe('DELETE /:id', () => {
       it('should delete a recipe', done => {
         request(app)
-        .delete('/api/recipes/' + newRecipe._id)
+          .delete('/api/recipes/' + newRecipe._id)
           .set('Accept', 'application/json')
           .set('Authorization', token)
           .expect('Content-Type', /json/)
@@ -220,7 +195,7 @@ describe('Cards.', function () {
       });
     });
 
-    describe('DELETE /', () => {
+    describe('DELETE /:id', () => {
       it('should try to delete an invalid recipe', done => {
         request(app)
           .delete('/api/recipes/' + newRecipe._id)

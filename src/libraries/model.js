@@ -1,5 +1,4 @@
 class Model {
-
   constructor(SchemaModel) {
     this.SchemaModel = SchemaModel;
   }

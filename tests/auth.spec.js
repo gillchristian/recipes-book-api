@@ -7,7 +7,6 @@ const config = require('../src/config/config');
 describe('Authentication.', function () {
   this.timeout(5000);
 
-
   describe('/api/authenticate', () => {
     describe('POST /', () => {
       it('should try to authenticate with no username', done => {
