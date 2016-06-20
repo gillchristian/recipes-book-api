@@ -1,6 +1,9 @@
+'use strict';
+(function(){
+
 angular
   .module('recipesBookApp')
-  .factory('RecipesService', RecipesService); 
+  .factory('RecipesService', RecipesService);
 
 function RecipesService($http) {
   return {
@@ -8,19 +11,19 @@ function RecipesService($http) {
     create: create,
     delete: deleteRecipe
   };
-  
+
   /**
    * Get recipes
-   * 
+   *
    * @returns {Promise}  http get request promise
    */
   function get() {
     return $http.get('/api/recipes');
   }
-  
+
   /**
    * Create a recipe
-   * 
+   *
    * @returns {Object}  recipe data
    * @returns {Promise}  http get request promise
    */
@@ -38,7 +41,7 @@ function RecipesService($http) {
 
   /**
    * Delete a recipe
-   * 
+   *
    * @returns {Number}  recipe id
    * @returns {Promise}  http delete request promise
    */
@@ -46,3 +49,5 @@ function RecipesService($http) {
     return $http.delete('/api/recipes/' + id);
   }
 }
+
+})();

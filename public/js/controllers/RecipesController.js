@@ -1,5 +1,4 @@
 (function () {
-
   angular
     .module('recipesBookApp')
     .controller('RecipesController', RecipesController);
@@ -9,7 +8,7 @@
     var vm = this;
     // --- exposed methods ---
     vm.submit = submit;
-    
+
     // --- variables initialization ---
     vm.title = 'Recipes';
     vm.previewTitle = 'Preview Recipe';
@@ -54,7 +53,12 @@
         }
       },
     ];
-    
+
+    ngNotify.config({
+      duration: 2500,
+      theme: 'pastel'
+    });
+
     ///////////////////////////
 
     /**

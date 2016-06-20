@@ -18,7 +18,7 @@
     <div class="layout-container">
       <div class="layout">
         <h2>{{ vm.title }}</h2>
-        <form ng-submit="vm.submit(vm.model)" novalidate>
+        <form ng-submit="vm.submit()" novalidate>
           <formly-form model="vm.model" fields="vm.fields" form="vm.form" options="vm.options">
             <button type="submit" ng-disabled="vm.form.$invalid" class="btn btn-default">Submit</button>
           </formly-form>
