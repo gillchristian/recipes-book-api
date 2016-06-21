@@ -3,7 +3,7 @@ require('should');
 const request = require('supertest');
 const app = require('./helpers/mock.app');
 
-describe('Server API', () => {
+describe('Server API', function () {
   this.timeout(5000);
 
   describe('GET /', () => {

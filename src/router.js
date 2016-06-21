@@ -10,9 +10,10 @@ const path = require('path');
 
 module.exports = (req, res, next) => {
   const relative = process.env.NODE_ENV === 'prod' ?
-    './public/bundle.prod.js' :
-    './public/bundle.dev.js';
-  res.app.use('/app.js', express.static(path.join(__dirname, relative)));
+    'bundle.prod.js' :
+    'bundle.dev.js';
+  const filename = path.join(__dirname, 'public/build/', relative);
+  res.app.use('/app.js', express.static(filename));
 
   req.app.use('/', mainRoute);
   req.app.use('/api/authenticate', authRoute);

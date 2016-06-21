@@ -17,7 +17,7 @@ if (isProd) {
 const config = {
   entry,
   output: {
-    path: `${__dirname}/src/public`,
+    path: `${__dirname}/src/public/build`,
     publicPath: isProd ? 'build/' : 'http://localhost:3000/',
     filename: isProd ? '[name].prod.js' : '[name].dev.js'
   },
