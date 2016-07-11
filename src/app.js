@@ -1,25 +1,25 @@
-const config = require('./config/config');
-const express = require('express');
-const bodyParser = require('body-parser');
-const morgan = require('morgan');
-const routes = require('./router');
-const middlewares = require('./middlewares');
+const config = require('./config/config')
+const express = require('express')
+const bodyParser = require('body-parser')
+const morgan = require('morgan')
+const routes = require('./router')
+const middlewares = require('./middlewares')
 
-const app = express();
+const app = express()
 
 function server(mongoose) {
-  require('./libraries/promisify-all')(['mongoose']); // eslint-disable-line global-require
+  // eslint-disable-next-line no-param-reassign
+  mongoose.Promise = global.Promise
+  mongoose.connect(config.MONGODB_URI)
+  app.use(bodyParser.urlencoded({ extended: true }))
+  app.use(bodyParser.json())
+  app.use(morgan('tiny'))
 
-  mongoose.connect(config.MONGODB_URI);
-  app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(bodyParser.json());
-  app.use(morgan('tiny'));
+  app.use(middlewares.cors)
 
-  app.use(middlewares.cors);
+  app.use('/', routes)
 
-  app.use('/', routes);
-
-  return app;
+  return app
 }
 
-module.exports = server;
+module.exports = server

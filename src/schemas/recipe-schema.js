@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const RecipeSchmea = new Schema({
   name: {
@@ -23,16 +23,16 @@ const RecipeSchmea = new Schema({
   image: {
     type: String,
   },
-});
+})
 
 RecipeSchmea.pre('save', function idNameHook(next) {
   if (!this.idName) {
     this.idName = this.name
       .toLowerCase()
       .replace(/ /g, '-')
-      .replace(/\./g, '');
+      .replace(/\./g, '')
   }
-  next();
-});
+  next()
+})
 
-module.exports = mongoose.model('Recipe', RecipeSchmea);
+module.exports = mongoose.model('Recipe', RecipeSchmea)

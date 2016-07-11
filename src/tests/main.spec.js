@@ -1,10 +1,11 @@
-require('should');
+require('should')
 
-const request = require('supertest');
-const app = require('./helpers/mock.app');
+const request = require('supertest')
+const app = require('./helpers/mock.app')
 
+// eslint-disable-next-line
 describe('Server API', function () {
-  this.timeout(5000);
+  this.timeout(5000)
 
   describe('GET /', () => {
     it('should get main page', done => {
@@ -13,9 +14,9 @@ describe('Server API', function () {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .end((err, res) => {
-          res.status.should.eql(200);
-          done();
-        });
-    });
-  });
-});
+          res.status.should.eql(200)
+          done()
+        })
+    })
+  })
+})

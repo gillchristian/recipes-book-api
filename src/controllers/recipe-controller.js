@@ -1,4 +1,4 @@
-const Controller = require('../libraries/controller');
-const RecipeModel = require('../models/recipe-model');
+const Controller = require('../libraries/controller')
+const RecipeModel = require('../models/recipe-model')
 
-module.exports = new Controller(RecipeModel);
+module.exports = new Controller(RecipeModel)

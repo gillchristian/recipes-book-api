@@ -1,43 +1,43 @@
 class Model {
   constructor(SchemaModel) {
-    this.SchemaModel = SchemaModel;
+    this.SchemaModel = SchemaModel
   }
 
   create(input) {
-    const newSchemaModel = new this.SchemaModel(input);
-    return newSchemaModel.saveAsync();
+    const newSchemaModel = new this.SchemaModel(input)
+    return newSchemaModel.saveAsync()
   }
 
   update(id, updatedModel) {
-    if (!id) throw new Error('Missing id parametter');
+    if (!id) throw new Error('Missing id parametter')
     return this.SchemaModel.findByIdAndUpdate(id, updatedModel, { new: true })
-      .execAsync();
+      .execAsync()
   }
 
   find(query) {
     return this.SchemaModel.find(query)
-      .execAsync();
+      .execAsync()
   }
 
   findOne(query, populate) {
     return this.SchemaModel.findOne(query)
       .populate(populate || '')
-      .execAsync();
+      .execAsync()
   }
 
   findById(id, populate) {
-    if (!id) throw new Error('Missing id parametter');
+    if (!id) throw new Error('Missing id parametter')
     return this.SchemaModel
       .findById(id)
       .populate(populate || '')
-      .execAsync();
+      .execAsync()
   }
 
   remove(id) {
-    if (!id) throw new Error('Missing id parametter');
+    if (!id) throw new Error('Missing id parametter')
     return this.SchemaModel.findByIdAndRemove(id)
-      .execAsync();
+      .execAsync()
   }
 }
 
-module.exports = Model;
+module.exports = Model

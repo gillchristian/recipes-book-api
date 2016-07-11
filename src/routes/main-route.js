@@ -1,5 +1,5 @@
-const Router = require('express').Router;
-const router = new Router();
+const Router = require('express').Router
+const router = new Router()
 
 router.get('/', (req, res) => {
   res.json({
@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
     },
     version: '1.0.0',
     lastUpdate: 'June 17 2016',
-  });
-});
+  })
+})
 
-module.exports = router;
+module.exports = router

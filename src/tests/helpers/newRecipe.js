@@ -3,7 +3,7 @@ function getSuffix() {
 }
 
 module.exports = () => {
-  const suffix = getSuffix();
+  const suffix = getSuffix()
   return {
     name: `Pie number ${suffix}`,
     ingredients: [
@@ -14,5 +14,5 @@ module.exports = () => {
     instructions: 'Lorem ipsum dolor eggs and flur and suggar. Cook all.',
     image: `http://some-url/img-${suffix}.png`,
     suffix,
-  };
-};
+  }
+}
